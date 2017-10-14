@@ -1,7 +1,13 @@
-# euler-math
+.. highlight:: rst
+
+==========
+euler-math
+==========
 
 Utility methods for Project Euler
 
-### Installation
+^^^^^^^^^^^^
+Installation
+^^^^^^^^^^^^
 
-`pip install euler-math`
+    pip install euler-math
