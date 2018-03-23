@@ -4,10 +4,9 @@ __all__ = [
     "Seq"
 ]
 
-from euler import \
-    memoize, timer, primes, prime, is_prime, GCD, LCM, DivisorSigma,\
-    FactorInteger, fst, snd, PrimeQ, PrimePi
+from .euler import memoize, timer, primes, prime, is_prime, GCD, LCM, \
+                   DivisorSigma, FactorInteger, fst, snd, PrimeQ, PrimePi
 
-from tco import tco
+from .tco import tco
 
-import Seq
+from . import Seq

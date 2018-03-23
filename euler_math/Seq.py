@@ -1,4 +1,4 @@
-import __builtin__
+import builtins as __builtin__
 import itertools as _itertools
 import functools as _functools
 import operator as _operator
@@ -54,7 +54,7 @@ def sum(sequence):
 
 @Seq
 def sumBy(sequence, function):
-    return __builtin__.sum(_itertools.imap(function, sequence))
+    return __builtin__.sum(map(function, sequence))
 
 
 @Seq
@@ -67,7 +67,7 @@ def scan(sequence, function, state):
 
 @Seq
 def filter(sequence, function):
-    return _itertools.ifilter(function, sequence)
+    return filter(function, sequence)
 
 
 @Seq
@@ -82,26 +82,26 @@ def skipWhile(sequence, function):
 
 @Seq
 def skip(sequence, n):
-    for i in range(n):
+    for _ in range(n):
         sequence.next()
     return sequence
 
 
 @Seq
 def nth(sequence, n):
-    for i in range(n):
+    for _ in range(n):
         sequence.next()
     return sequence.next()
 
 
 @Seq
 def map(sequence, function):
-    return _itertools.imap(function, sequence)
+    return map(function, sequence)
 
 
 @Seq
 def mapi(sequence, function):
-    return _itertools.imap(function, enumerate(sequence))
+    return map(function, enumerate(sequence))
 
 
 @Seq
@@ -164,15 +164,11 @@ def head(sequence):
 
 @Seq
 def find(sequence, function):
-    return next(_itertools.ifilter(function, sequence), None)
-
+    return next(filter(function, sequence), None)
 
 @Seq
 def findIndex(sequence, function):
-    return next(
-        _itertools.ifilter(lambda (i, x): function(x), enumerate(sequence)),
-        None)[0]
-
+    return next(filter(lambda x: function(x[1]), enumerate(sequence)), None)[0]
 
 @Seq
 def rev(sequence):
@@ -181,19 +177,19 @@ def rev(sequence):
 
 @Seq
 def zip(sequence1, sequence2):
-    return _itertools.izip(sequence1, sequence2)
+    return zip(sequence1, sequence2)
 
 
 @Seq
 def flatten(sequence):
     return _itertools.chain.from_iterable(
-        _itertools.imap(lambda x: x, sequence))
+        map(lambda x: x, sequence))
 
 
 @Seq
 def length(sequence):
     count = 0
-    for x in sequence:
+    for _ in sequence:
         count += 1
     return count
 
@@ -205,7 +201,7 @@ def exists(sequence, function):
 
 @Seq
 def collect(sequence, function):
-    for s in _itertools.imap(function, sequence):
+    for s in map(function, sequence):
         for x in s:
             yield x
 

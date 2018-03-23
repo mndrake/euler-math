@@ -1,4 +1,4 @@
-import __builtin__
+import builtins as __builtin__
 import itertools as _itertools
 import functools as _functools
 
@@ -25,7 +25,7 @@ def sum(list):
 
 @List
 def sumBy(list, function):
-    return __builtin__.sum(_itertools.imap(function, list))
+    return __builtin__.sum(map(function, list))
 
 
 @List
@@ -52,7 +52,7 @@ def reduce(list, function):
 def collect(list, function):
 
     def gen():
-        for s in _itertools.imap(function, list):
+        for s in map(function, list):
             for x in s:
                 yield x
 

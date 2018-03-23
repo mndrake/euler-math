@@ -1,5 +1,6 @@
 import numpy as np
 import operator
+from functools import reduce
 from sys import setrecursionlimit
 setrecursionlimit(4000)
 
@@ -23,7 +24,7 @@ def timer(f):
     start = default_timer()
     result = f()
     end = default_timer()
-    print 'result:', result, '(%.2fs)' % (end - start)
+    print('result:', result, '(%.2fs)' % (end - start))
 
 
 def readlines(file):
@@ -70,11 +71,11 @@ def is_prime(n):
     if n < 1:
         return False
     ps = primes()
-    p = ps.next()
+    p = next(ps)
     while p * p <= n:
         if n % p == 0:
             return False
-        p = ps.next()
+        p = next(ps)
     return True
 
 
@@ -109,13 +110,13 @@ def FactorInteger(n):
     factors = []
     ps = primes()
     m = n
-    p = ps.next()
+    p = next(ps)
     while p * p <= m:
         if m % p == 0:
             m /= p
             factors.append(p)
         else:
-            p = ps.next()
+            p = next(ps)
     factors.append(m)
     return list((item, len(list(group)))
                 for item, group in groupby(sorted(factors)))
