@@ -44,7 +44,7 @@ def _grow_primes():
     p0 = _primes[len(_primes) - 1] + 1
     b = np.ones(p0, dtype=bool)
     for di in _primes:
-        i0 = p0 / di * di
+        i0 = p0 // di * di
         if i0 < p0:
             b[i0 + di - p0::di] = False
         else:
