@@ -54,7 +54,7 @@ def sum(sequence):
 
 @Seq
 def sumBy(sequence, function):
-    return __builtin__.sum(map(function, sequence))
+    return __builtin__.sum(__builtin__.map(function, sequence))
 
 
 @Seq
@@ -96,12 +96,12 @@ def nth(sequence, n):
 
 @Seq
 def map(sequence, function):
-    return map(function, sequence)
+    return __builtin__.map(function, sequence)
 
 
 @Seq
 def mapi(sequence, function):
-    return map(function, enumerate(sequence))
+    return __builtin__.map(function, enumerate(sequence))
 
 
 @Seq
@@ -177,13 +177,13 @@ def rev(sequence):
 
 @Seq
 def zip(sequence1, sequence2):
-    return zip(sequence1, sequence2)
+    return __builtin__.zip(sequence1, sequence2)
 
 
 @Seq
 def flatten(sequence):
     return _itertools.chain.from_iterable(
-        map(lambda x: x, sequence))
+        __builtin__.map(lambda x: x, sequence))
 
 
 @Seq
@@ -201,7 +201,7 @@ def exists(sequence, function):
 
 @Seq
 def collect(sequence, function):
-    for s in map(function, sequence):
+    for s in __builtin__.map(function, sequence):
         for x in s:
             yield x
 
