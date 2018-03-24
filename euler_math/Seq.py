@@ -67,7 +67,7 @@ def scan(sequence, function, state):
 
 @Seq
 def filter(sequence, function):
-    return filter(function, sequence)
+    return __builtin__.filter(function, sequence)
 
 
 @Seq
@@ -164,11 +164,11 @@ def head(sequence):
 
 @Seq
 def find(sequence, function):
-    return next(filter(function, sequence), None)
+    return next(__builtin__.filter(function, sequence), None)
 
 @Seq
 def findIndex(sequence, function):
-    return next(filter(lambda x: function(x[1]), enumerate(sequence)), None)[0]
+    return next(__builtin__.filter(lambda x: function(x[1]), enumerate(sequence)), None)[0]
 
 @Seq
 def rev(sequence):
