@@ -3,4 +3,6 @@
 .vscode
 build
 dist
+tags
+venv
 .idea

@@ -4,6 +4,8 @@ __all__ = [
     "Seq"
 ]
 
+__version__ = '0.2.5'
+
 from .euler import memoize, timer, primes, prime, is_prime, GCD, LCM, \
                    DivisorSigma, FactorInteger, fst, snd, PrimeQ, PrimePi
 

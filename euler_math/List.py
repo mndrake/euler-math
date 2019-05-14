@@ -1,12 +1,11 @@
 import builtins as __builtin__
-import itertools as _itertools
 import functools as _functools
 
 
 class List:
 
-    def __init__(self, function):
-        self.function = function
+    def __init__(self, f):
+        self.function = f
 
     def __rrshift__(self, other):
         return self.function(other)
@@ -24,18 +23,18 @@ def sum(list):
 
 
 @List
-def sumBy(list, function):
-    return __builtin__.sum(map(function, list))
+def sumBy(list, f):
+    return __builtin__.sum(map(f, list))
 
 
 @List
-def filter(list, function):
-    return [x for x in list if function(x)]
+def filter(list, f):
+    return [x for x in list if f(x)]
 
 
 @List
-def map(list, function):
-    return [function(x) for x in list]
+def map(list, f):
+    return [f(x) for x in list]
 
 
 @List
@@ -44,15 +43,15 @@ def max(list):
 
 
 @List
-def reduce(list, function):
-    return _functools.reduce(function, list)
+def reduce(list, f):
+    return _functools.reduce(f, list)
 
 
 @List
-def collect(list, function):
+def collect(list, f):
 
     def gen():
-        for s in map(function, list):
+        for s in map(f, list):
             for x in s:
                 yield x
 

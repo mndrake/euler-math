@@ -101,7 +101,7 @@ def GCD(a, b):
 
 def LCM(a, b):
     """https://reference.wolfram.com/language/ref/LCM.html"""
-    return a / GCD(a, b) * b
+    return a // GCD(a, b) * b
 
 
 def FactorInteger(n):
@@ -113,7 +113,7 @@ def FactorInteger(n):
     p = next(ps)
     while p * p <= m:
         if m % p == 0:
-            m /= p
+            m //= p
             factors.append(p)
         else:
             p = next(ps)
