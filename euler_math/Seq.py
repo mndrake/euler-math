@@ -22,7 +22,7 @@ class Seq:
 def unfold(function, initial):
     x = initial
     while True:
-        res = function(*x)
+        res = function(x)
         if res is None:
             raise StopIteration
         else:
