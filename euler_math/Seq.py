@@ -24,7 +24,7 @@ def unfold(function, initial):
     while True:
         res = function(x)
         if res is None:
-            raise StopIteration
+            break
         else:
             w, x = res
             yield w
