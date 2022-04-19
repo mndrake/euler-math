@@ -3,8 +3,6 @@ import itertools as _itertools
 import functools as _functools
 import operator as _operator
 
-from sympy import fu
-
 
 class Seq:
 
