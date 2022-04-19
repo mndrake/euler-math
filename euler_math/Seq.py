@@ -93,15 +93,15 @@ def skipWhile(sequence, function):
 @Seq
 def skip(sequence, n):
     for _ in range(n):
-        sequence.next()
+        next(sequence)
     return sequence
 
 
 @Seq
 def nth(sequence, n):
     for _ in range(n):
-        sequence.next()
-    return sequence.next()
+        next(sequence)
+    return next(sequence)
 
 
 @Seq
