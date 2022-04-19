@@ -31,10 +31,84 @@ def readlines(file):
     return open(file).read().splitlines()
 
 
+def pack(function):
+    return lambda p: function(*p)
+
+
 fst = operator.itemgetter(0)
 snd = operator.itemgetter(1)
 
 # number theory methods ---------------------------------------
+
+HAS_GMPY = False
+
+try:
+    import gmpy2
+    HAS_GMPY = True
+except ImportError as e:
+    pass 
+
+def mr(n, bases):   
+    """Perform a Miller-Rabin strong pseudoprime test on n using a
+    given list of bases/witnesses."""
+    s = ((n - 1) & (1 - n)).bit_length() - 1
+    d = n >> s
+    for a in bases:
+        if HAS_GMPY:
+            p = gmpy2.powmod(a, d, n)
+        else:
+            p = pow(a, d, n)
+        if p == 1 or p == n - 1 or a % n == 0:
+            continue
+        for _ in range(s):
+            p = (p * p) % n
+            if p == n - 1:
+                break
+        else:
+            return False
+    return True
+
+
+def PrimeQ(n):
+    """yields true if a prime number and yields false otherwise"""
+    if n in [2, 3, 5]:
+        return True
+    if n < 2 or (n % 2) == 0 or (n % 3) == 0 or (n % 5) == 0:
+        return False
+    if n < 49:
+        return True
+    if (n %  7) == 0 or (n % 11) == 0 or (n % 13) == 0 or (n % 17) == 0 or \
+       (n % 19) == 0 or (n % 23) == 0 or (n % 29) == 0 or (n % 31) == 0 or \
+       (n % 37) == 0 or (n % 41) == 0 or (n % 43) == 0 or (n % 47) == 0:
+        return False
+    if n < 2809:
+        return True
+    if n <= 23001:
+        if HAS_GMPY:
+            return gmpy2.powmod(2, n, n) == 2 and n not in [7957, 8321, 13747, 18721, 19951]
+        else:        
+            return pow(2, n, n) == 2 and n not in [7957, 8321, 13747, 18721, 19951]
+    
+    # https://miller-rabin.appspot.com/
+    
+    if n < 341531:
+        return mr(n, [9345883071009581737])
+    if n < 885594169:
+        return mr(n, [725270293939359937, 3569819667048198375])
+    if n < 350269456337:
+       return mr(n, [4230279247111683200, 14694767155120705706, 16641139526367750375])
+    if n < 55245642489451:
+       return mr(n, [2, 141889084524735, 1199124725622454117, 11096072698276303650])
+    if n < 7999252175582851:
+       return mr(n, [2, 4130806001517, 149795463772692060, 186635894390467037, 3967304179347715805])
+    if n < 585226005592931977:
+       return mr(n, [2, 123635709730000, 9233062284813009, 43835965440333360, 761179012939631437, 1263739024124850375])
+    # valid for n < 2 ** 64
+    return mr(n, [2, 325, 9375, 28178, 450775, 9780504, 1795265022])
+
+
+
+# prime generator ---------------------------------------
 
 # prime list cache
 _primes = [2]
@@ -68,7 +142,7 @@ def prime(n):
 
 
 def is_prime(n):
-    if n < 1:
+    if n < 2:
         return False
     ps = primes()
     p = next(ps)
@@ -77,11 +151,6 @@ def is_prime(n):
             return False
         p = next(ps)
     return True
-
-
-def PrimeQ(n):
-    """yields true if a prime number and yields false otherwise"""
-    return is_prime(n)
 
 
 def PrimePi(n):

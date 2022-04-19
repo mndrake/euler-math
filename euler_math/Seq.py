@@ -3,6 +3,8 @@ import itertools as _itertools
 import functools as _functools
 import operator as _operator
 
+from sympy import fu
+
 
 class Seq:
 
@@ -63,6 +65,16 @@ def scan(sequence, function, state):
     for x in sequence:
         state = function(state, x)
         yield state
+        
+
+@Seq
+def scani(sequence, function, state):
+    i = 0
+    yield i, state
+    for x in sequence:
+        state = function(state, x)
+        i += 1
+        yield i, state
 
 
 @Seq
