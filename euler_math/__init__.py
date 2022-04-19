@@ -8,7 +8,7 @@ __all__ = [
     "Seq", "tco"
 ]
 
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 
 from .euler import memoize, timer, primes, prime, is_prime, GCD, LCM, \
                    DivisorSigma, FactorInteger, pack, fst, snd, PrimeQ, PrimePi
