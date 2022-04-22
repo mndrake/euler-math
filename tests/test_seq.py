@@ -1,5 +1,5 @@
 #pylint: disable = no-value-for-parameter
-from euler_math import Seq
+from euler_math import Seq, fst
 
 
 def test_seq_init():
@@ -278,3 +278,9 @@ def test_seq_sortBy():
     sequence = [5, 15, -10, -17]
     result = sequence >> Seq.sortBy(abs)
     assert list(result) == [5, -10, 15, -17]
+
+
+def test_seq_map_fst():
+    sequence = [(1,2), (3,4), (5,6)]
+    result = sequence >> Seq.map(fst)
+    assert list(result) == [1,3,5]
