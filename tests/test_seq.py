@@ -1,5 +1,5 @@
 #pylint: disable = no-value-for-parameter
-from euler_math import Seq, seq
+from euler_math import Seq
 
 
 def test_seq_init():
@@ -54,12 +54,6 @@ def test_seq_sum():
     result = sequence >> Seq.sum()
     assert result == 15
 
-
-def test_seq_sum_inline():
-    sequence = [1,2,3,4,5]
-    result = Seq.sum(sequence)()
-    assert result == 15
-    
 
 def test_seq_sumBy():
     sequence = [1,2,3,4,5]
@@ -119,6 +113,12 @@ def test_seq_map():
     sequence = [1,2,3,4,5] >> Seq.map(lambda x: x*x)
     result = list(sequence)
     assert result == [1,4,9,16,25]
+    
+
+def test_seq_map_packed():
+    sequence = [(2,1),(3,1)] >> Seq.map(lambda p,i: (i+1))
+    result = list(sequence)
+    assert result == [2,2]
 
 
 def test_seq_mapi_unpacked():

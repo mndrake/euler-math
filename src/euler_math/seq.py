@@ -11,19 +11,25 @@ import builtins as __builtin__
 import itertools as _itertools
 import functools as _functools
 import operator as _operator
+from textwrap import wrap
 
 
 class Pipe:
     """
     Overrides `>>` as an operator to chain Seq methods.
     """
-    def __init__(self, function, *args, **kwargs):
+    def __init__(self, function, args=(), kwargs={}):
         self.function = function
         self.args = args
         self.kwargs = kwargs
+
     def __rrshift__(self, other):
         return self.function(other, *self.args, **self.kwargs)
+        
     def __call__(self):
+        return self.function(*self.args, **self.kwargs)
+    
+    def __iter__(self):
         return self.function(*self.args, **self.kwargs)
 
 
@@ -33,7 +39,7 @@ def pipe(function):
     """
     @_functools.wraps(function)
     def wrapper(*args, **kwargs):
-        return Pipe(function, *args, **kwargs)
+        return Pipe(function, args, kwargs)
     return wrapper
 
 
@@ -215,7 +221,8 @@ class Seq:
         to each of the elements of the collection. The given function will be applied as elements
         are demanded using the `next` method on enumerators retrieved from the object.
         """
-        return __builtin__.map(function, sequence)
+        _function = packed_function(function)
+        return __builtin__.map(_function, sequence)
 
     @staticmethod
     @pipe

@@ -8,12 +8,6 @@ def test_list_sum():
     assert result == 15
 
 
-def test_list_sum_inline():
-    lst = [1,2,3,4,5]
-    result = List.sum(lst)()
-    assert result == 15
-
-
 def test_list_sumBy():
     lst = [1,2,3,4,5]
     result = lst >> List.sumBy(lambda x: x*x)
