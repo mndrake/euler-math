@@ -1,42 +1,52 @@
-import numpy as np
-import operator
-from functools import reduce
-from sys import setrecursionlimit
-setrecursionlimit(4000)
+"""
+Utility and Number Theory Methods for Project Euler.
+"""
+import functools as _functools
+import itertools as _itertools
+import operator as _operator
+import sys as _sys
+import timeit as _timeit
+import numpy as _np
+
+_sys.setrecursionlimit(4000)
 
 # utility methods ------------------------------------
 
 
-def memoize(f):
-
-    class memodict(dict):
+def memoize(function):
+    """
+    memoize function decorator
+    """
+    class MemoDict(dict):
+        """
+        Internal memoize dictionary class
+        """
         __slots__ = ()
 
         def __missing__(self, key):
-            self[key] = ret = f(key)
+            self[key] = ret = function(key)
             return ret
 
-    return memodict().__getitem__
+    return MemoDict().__getitem__
 
 
-def timer(f):
-    from timeit import default_timer
-    start = default_timer()
-    result = f()
-    end = default_timer()
-    print('result:', result, '(%.2fs)' % (end - start))
+def timer(function):
+    """
+    timer method for Euler problems
+    returns result and time taken in seconds
+    """
+    start = _timeit.default_timer()
+    result = function()
+    end = _timeit.default_timer()
+    print(f'result: {result} ({(end-start):.2f}s)')
 
 
 def readlines(file):
-    return open(file).read().splitlines()
+    """
+    return the text lines for a given file path
+    """
+    return open(file, encoding='utf-8').read().splitlines()
 
-
-def pack(function):
-    return lambda p: function(*p)
-
-
-fst = operator.itemgetter(0)
-snd = operator.itemgetter(1)
 
 # number theory methods ---------------------------------------
 
@@ -46,9 +56,10 @@ try:
     import gmpy2
     HAS_GMPY = True
 except ImportError as e:
-    pass 
+    pass
 
-def mr(n, bases):   
+
+def mr_test(n, bases):
     """Perform a Miller-Rabin strong pseudoprime test on n using a
     given list of bases/witnesses."""
     s = ((n - 1) & (1 - n)).bit_length() - 1
@@ -86,25 +97,27 @@ def PrimeQ(n):
     if n <= 23001:
         if HAS_GMPY:
             return gmpy2.powmod(2, n, n) == 2 and n not in [7957, 8321, 13747, 18721, 19951]
-        else:        
+        else:
             return pow(2, n, n) == 2 and n not in [7957, 8321, 13747, 18721, 19951]
-    
+
     # https://miller-rabin.appspot.com/
-    
+
     if n < 341531:
-        return mr(n, [9345883071009581737])
+        return mr_test(n, [9345883071009581737])
     if n < 885594169:
-        return mr(n, [725270293939359937, 3569819667048198375])
+        return mr_test(n, [725270293939359937, 3569819667048198375])
     if n < 350269456337:
-       return mr(n, [4230279247111683200, 14694767155120705706, 16641139526367750375])
+        return mr_test(n, [4230279247111683200, 14694767155120705706, 16641139526367750375])
     if n < 55245642489451:
-       return mr(n, [2, 141889084524735, 1199124725622454117, 11096072698276303650])
+        return mr_test(n, [2, 141889084524735, 1199124725622454117, 11096072698276303650])
     if n < 7999252175582851:
-       return mr(n, [2, 4130806001517, 149795463772692060, 186635894390467037, 3967304179347715805])
+        return mr_test(n, [2, 4130806001517, 149795463772692060, 186635894390467037,
+                           3967304179347715805])
     if n < 585226005592931977:
-       return mr(n, [2, 123635709730000, 9233062284813009, 43835965440333360, 761179012939631437, 1263739024124850375])
+        return mr_test(n, [2, 123635709730000, 9233062284813009, 43835965440333360,
+                           761179012939631437, 1263739024124850375])
     # valid for n < 2 ** 64
-    return mr(n, [2, 325, 9375, 28178, 450775, 9780504, 1795265022])
+    return mr_test(n, [2, 325, 9375, 28178, 450775, 9780504, 1795265022])
 
 
 
@@ -116,17 +129,20 @@ _primes = [2]
 
 def _grow_primes():
     p0 = _primes[len(_primes) - 1] + 1
-    b = np.ones(p0, dtype=bool)
+    b = _np.ones(p0, dtype=bool)
     for di in _primes:
         i0 = p0 // di * di
         if i0 < p0:
             b[i0 + di - p0::di] = False
         else:
             b[i0 - p0::di] = False
-    _primes.extend(np.where(b)[0] + p0)
+    _primes.extend(_np.where(b)[0] + p0)
 
 
 def primes():
+    """
+    sequence of prime numbers
+    """
     i = 0
     while True:
         if i >= len(_primes):
@@ -136,12 +152,20 @@ def primes():
 
 
 def prime(n):
+    """
+    returns the nth prime number starting with an index of 0
+    prime(0) == 2
+    """
     while n >= len(_primes):
         _grow_primes()
     return _primes[n]
 
 
 def is_prime(n):
+    """
+    Returns True if `n` is a prime number.
+    Uses a sieve based approach.
+    """
     if n < 2:
         return False
     ps = primes()
@@ -175,7 +199,6 @@ def LCM(a, b):
 
 def FactorInteger(n):
     """https://reference.wolfram.com/language/ref/FactorInteger.html"""
-    from itertools import groupby
     factors = []
     ps = primes()
     m = n
@@ -188,10 +211,9 @@ def FactorInteger(n):
             p = next(ps)
     factors.append(m)
     return list((item, len(list(group)))
-                for item, group in groupby(sorted(factors)))
+                for item, group in _itertools.groupby(sorted(factors)))
 
 
-def DivisorSigma(n):
+def DivisorSigma(n, k=1):
     """https://reference.wolfram.com/language/ref/DivisorSigma.html"""
-    import operator
-    return reduce(operator.mul, [(x[1] + 1) for x in FactorInteger(n)], 1)
+    return int(_functools.reduce(_operator.mul, [(p**((a+1)*k)-1) / (p**k - 1) for p,a in FactorInteger(n)], 1))

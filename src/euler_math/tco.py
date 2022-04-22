@@ -1,18 +1,24 @@
-# tail recursion optimization
-# from http://metapython.blogspot.com.br/2010/11/tail-recursion-elimination-in-python.html
-
+"""
+tail recursion optimization
+from http://metapython.blogspot.com.br/2010/11/tail-recursion-elimination-in-python.html
+"""
 from threading import currentThread
 
 
 class TailRecursiveCall(Exception):
-    pass
+    """
+    error raised if function tries to recurse itself
+    """
 
-
-class Rec_f(object):
-
+class RecursiveFunction:
+    """
+    Main Tail Recursive Class
+    """
     def __init__(self, func):
         self.tr_d = {}
         self.func = func
+        self.args = None
+        self.kw = None
 
     def __call__(self, *args, **kw):
         self.args = args
@@ -49,4 +55,7 @@ class Rec_f(object):
 
 
 def tco(func):
-    return Rec_f(func)
+    """
+    Function decorator for tail recursion optimization.
+    """
+    return RecursiveFunction(func)
