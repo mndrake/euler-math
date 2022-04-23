@@ -61,10 +61,9 @@ def packed_function(function):
     """returns a function with a single input"""
     # needed in python 3.x since lambda functions are not automatically unpacked
     # as they were in python 2.7
-    if type(function) == _operator.itemgetter:
-        return function
-    if function.__code__.co_argcount > 1:
-        return pack(function)
+    if hasattr(function, '__code__'):
+        if function.__code__.co_argcount > 1:
+            return pack(function)
     return function
 
 

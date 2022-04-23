@@ -6,3 +6,4 @@ dist
 tags
 venv
 .idea
+.DS_Store
